@@ -1,4 +1,10 @@
 #include<stdio.h>
+#include<stdlib.h>
+#include<stdbool.h>
+#include<time.h>
+#define CANVAS_WIDTH 10
+#define CANVAS_HEIGHT 20
+
 
 typedef enum
 {
@@ -31,6 +37,23 @@ typedef struct
 	int size;
 	char rotates[4][4][4];
 }Shape;
+
+typedef struct
+{
+	Color color;
+	ShapeId shape;
+	bool current;
+}block;
+
+typedef struct {
+	int x;
+	int y;
+	int score;
+	int rotate;
+	int fallTime;
+	ShapeId queue[4];
+}State;
+
 
 Shape shape[7] = {
 	{
@@ -69,6 +92,29 @@ Shape shape[7] = {
 		.shape = J,
 		.color = BLUE,
 		.size = 3,
+		.rotates =
+		{
+			{
+				{0,0,0},
+				{1,1,1},
+				{0,0,0},
+			},
+			{
+				{0,0,1},
+				{0,0,1},
+				{0,0,1},
+			},
+			{
+				{0,0,0},
+				{0,0,0},
+				{1,1,1},
+			},
+			{
+				{0,1,0},
+				{0,1,0},
+				{0,1,0},
+			}
+		}
 	},
 	{
 		.shape = L,
@@ -107,6 +153,31 @@ Shape shape[7] = {
 		.shape = T,
 		.color = PURPLE,
 		.size = 3,
+		.rotates =
+		{
+			{
+				{0,1,0},
+				{1,1,1},
+				{0,0,0},
+			},
+			{
+				{0,0,1,0},
+				{0,0,1,0},
+				{0,0,1,0},
+				{0,0,1,0},
+			},
+			{
+				{0,0,0,0},
+				{0,0,0,0},
+				{1,1,1,1},
+				{0,0,0,0},
+			},
+			{
+				{0,1,0},
+				{1,1,0},
+				{0,1,0},
+			}
+		}
 	},
 	{
 		.shape = Z,
@@ -115,26 +186,19 @@ Shape shape[7] = {
 	},
 };
 
+void setblock(block* block, color color, shapeId shape, bool current) {
+	block->color = black;
+	block->shape = shape;
+	block->current = current;
+}
+
+void resetblock(block* block) {
+	block->color = BLACK;
+	block->shape = EMPTY;
+	block->current = false;
+}
+
 int main() {
-	Color cur;
-	// 有幾種方塊
-	for (int i = 0; i < 1; i++) {
-		// 印出方塊樣式
-		for (int r = 0; r < 4; r++) {
-			for (int s = 0; s < shape[i].size; s++) {
-				for (int t = 0; t < shape[i].size; t++) {
-					if (shape[i].rotates[r][s][t] == 0) {
-						cur = WHITE;
-					}
-					else {
-						cur = shape[i].color;
-					}
-					printf("\033[%dm  \033[0m", cur);
-				}
-				printf("\n");
-			}
-			printf("\n");
-		}
-	}
+
 	return 0;
 }
