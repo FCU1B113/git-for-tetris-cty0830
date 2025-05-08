@@ -206,9 +206,9 @@ void printCanvas(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], State* state)
         printf("\033[0m|\n");
     }
 
-    // 輸出Next:
+
     printf("\033[%d;%dHNext:", 3, CANVAS_WIDTH * 2 + 5);
-    // 輸出有甚麼方塊
+
     for (int i = 1; i <= 3; i++)
     {
         Shape shapeData = shapes[state->queue[i]];
@@ -236,19 +236,16 @@ bool move(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], int originalX, int original
     Shape shapeData = shapes[shapeId];
     int size = shapeData.size;
 
-    // 判斷方塊有沒有不符合條件
     for (int i = 0; i < size; i++)
     {
         for (int j = 0; j < size; j++)
         {
             if (shapeData.rotates[newRotate][i][j])
             {
-                // 判斷有沒有出去邊界
                 if (newX + j < 0 || newX + j >= CANVAS_WIDTH || newY + i < 0 || newY + i >= CANVAS_HEIGHT)
                 {
                     return false;
                 }
-                // 判斷有沒有碰到別的方塊
                 if (!canvas[newY + i][newX + j].current && canvas[newY + i][newX + j].shape != EMPTY)
                 {
                     return false;
@@ -257,7 +254,6 @@ bool move(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], int originalX, int original
         }
     }
 
-    // 移除方塊舊的位置
     for (int i = 0; i < size; i++)
     {
         for (int j = 0; j < size; j++)
@@ -269,7 +265,6 @@ bool move(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], int originalX, int original
         }
     }
 
-    // 移動方塊至新的位置
     for (int i = 0; i < size; i++)
     {
         for (int j = 0; j < size; j++)
